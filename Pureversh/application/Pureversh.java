@@ -12,30 +12,30 @@ import data.Strings;
 import data.MainGame;
 
 public class Pureversh {
-	private Stage root;
-	private MainGame mainGame;
-	private VBox main;
+	private Stage root;	//上一个窗口, 到这里关闭
+	private MainGame mainGame;	//显示界面
+	private VBox main;	//整个界面
 	private Scene scene;
 	private Stage stage;
-	private HBox buttons;
+	private HBox buttons;	//存放控制按钮 ( 下 )
 	private Button restartButton;
 	private Button rollButton;
-	private Button exitButton;
+	private Button exitButton;	//退出按钮
 	public Pureversh() {
 		this(null);
 	}
 	public Pureversh(Stage root) {
 		this.root = root;
-		this.mainGame = new MainGame();
+		this.mainGame = new MainGame();	//生成新数列
 	}
 	public void start() {
 		if(root != null) {
-			root.close();
+			root.close();	//关闭上一个窗口
 		}
-		fresh();
+		fresh();	//更新数列
 		
 	}
-	private void fresh() {
+	private void fresh() {	//更新数列 ( 再来一组 )
 		main = new VBox(20);
 
 		scene = new Scene(main, 400, 200);
