@@ -13,23 +13,24 @@ public class MainGame {
 	private Integer kind;
 	private Integer length;
 	private Integer control;
-	private Double difficultyPoint;
-	private HBox mainGame;
-	private VBox main;
+	private Double difficultyPoint;	//难度系数
+	private HBox mainGame;	//序列界面
+	private VBox main;	//主界面
 //	private HBox showNums;
 //	private HBox showButtons;
-	private Text information;
-	private VBox[] numsButtons;
-	private String[] oriNums;
-	private Text[] nums;
+	private Text information;	//上方的难度信息
+	private VBox[] numsButtons;	//数字与移动控制按钮一一对应 ( 目的: 对齐 )
+	private String[] oriNums;	//原来的序列 ( 针对 Restart )
+	private Text[] nums;	//显示的序列
 	Button[] buttons;
 	public MainGame() {
-		Integer[] difficulties = Difficulty.getDifficulties();
+		Integer[] difficulties = Difficulty.getDifficulties();	//获取难度信息
 		this.kind = difficulties[0];
 		this.length = difficulties[1];
 		this.control = difficulties[2];
-		this.difficultyPoint = Difficulty.getDifficultyPoint();
+		this.difficultyPoint = Difficulty.getDifficultyPoint();	//获取难度系数
 		
+		//显示难度系数
 		information = new Text(Strings.getDifficultyPoint() + " " + String.format("%.2f", difficultyPoint.doubleValue()));
 		information.setTextAlignment(TextAlignment.CENTER);
 		
@@ -66,46 +67,47 @@ public class MainGame {
 		
 	}
 	
-	public VBox getVBox() {
+	public VBox getVBox() {	//得到显示界面
 		return main;
 	}
-	private void operation(int i) {
-		if(i == length.intValue() - 1) {
+	private void operation(int i) {	//提取与加入
+		if(i == length.intValue() - 1) {	//没有变化, 减少运算
 			return;
 		}
-		String temp = nums[i].getText();
+		String temp = nums[i].getText();	//提取与插入
 		for(i += 1; i < length.intValue(); ++ i) {
 			nums[i - 1].setText(nums[i].getText());
 		}
 		nums[length.intValue() - 1].setText(temp);
-		check();
+		check();	//检查完成情况
 	}
-	public void restart() {
+	public void restart() {	//再来一遍
 		for(int i = 0; i < length.intValue(); ++ i) {
 			nums[i].setText(oriNums[i]);
 			buttons[i].setDisable(i >= control.intValue());
 		}
 	}
-	public void roll() {
+	public void roll() {	//再来一把
 		while(true) {
 			for(int i = 0; i < length.intValue(); ++ i) {
 				oriNums[i] = String.valueOf(((int)(Math.random() * kind.intValue())));
 				nums[i].setText(oriNums[i]);
 				buttons[i].setDisable(i >= control.intValue());
 			}
-			if(!check()) {
-				break;
+			if(!check()) {	//检验是否已经完成
+				break;	//不是已经完成, 不用重新生成数据
 			}
+			//否则一来就完成了, 重新刷新
 		}
 	}
-	private boolean check() {
+	private boolean check() {	//检验是否完成要求
 		for(int i = 1; i < length.intValue(); ++ i) {
 			if(nums[i - 1].getText().compareTo(nums[i].getText()) > 0) {
 				return false;
 			}
 		}
 
-		for(int i = 0; i < control.intValue(); ++ i) {
+		for(int i = 0; i < control.intValue(); ++ i) {	//如果完成要求, 将所有操作移动按钮关闭以提示完成
 			buttons[i].setDisable(true);
 		}
 		return true;
