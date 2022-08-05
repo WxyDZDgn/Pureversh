@@ -72,6 +72,7 @@ public class Difficulty {
 				kind = Integer.valueOf(settings[0]);
 				length = Integer.valueOf(settings[1]);
 				control = Integer.valueOf(settings[2]);
+				//如果参数范围不对, 恢复默认
 				if(kind.intValue() < 5 || kind.intValue() > 10) {
 					kind = 5;
 				}
@@ -93,14 +94,12 @@ public class Difficulty {
 			e.printStackTrace();
 		}
 	}
-	public static void saveFile() {
+	public static void saveFile() {	//保存文件
 		try {
-			getDifficulties();
+			getDifficulties();	//更新难度参数
 			File config = new File("C:/pureversh/config.txt");
 			PrintWriter output = new PrintWriter(config);
-			if(kind != null && length != null && control != null) {
-				output.print(kind + " " + length + " " + control);
-			}
+			output.print(kind + " " + length + " " + control);
 			output.close();
 			
 		} catch(Exception e) {
