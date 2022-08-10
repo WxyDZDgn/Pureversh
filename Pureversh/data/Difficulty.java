@@ -18,6 +18,9 @@ public class Difficulty {
 		Integer[] difficulties = getDifficulties();
 		return 1.0 * (difficulties[0] * difficulties[1]) / (5 * difficulties[2]);
 	}
+	public static Double getDifficultyPoint(Integer k, Integer l, Integer c) {	//得到难度评分
+		return (k != null && l != null && c != null) ? 1.0 * (k * l) / (5 * c) : null;
+	}
 	private static void freshFile() {
 		try {
 			//开始前预处理
@@ -88,15 +91,18 @@ public class Difficulty {
 				}
 			}
 			checkConfigFile.close();
-			saveFile();
+			saveFile(false);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	public static void saveFile() {	//保存文件
+	public static void saveFile(boolean changed) {	//保存文件
+		//changed 为: 是否改变了难度, 以防止难度信息恢复默认
 		try {
-			getDifficulties();	//更新难度参数
+			if(changed) {	//修改了, 但是不在文件里面, 不能从文件里获取
+				getDifficulties();	//更新文件里的难度参数
+			}
 			File config = new File("C:/pureversh/config.txt");
 			PrintWriter output = new PrintWriter(config);
 			output.print(kind + " " + length + " " + control);
@@ -105,5 +111,18 @@ public class Difficulty {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	//手动改变难度
+	public static void changeDifficulties(Integer k, Integer l, Integer c) {
+		if(kind == null || length == null || control == null) {
+			freshFile();
+		}
+		if(kind.equals(k) && length.equals(l) && control.equals(c)) {
+			return;
+		}
+		kind = k;
+		length = l;
+		control = c;
+		saveFile(true);
 	}
 }

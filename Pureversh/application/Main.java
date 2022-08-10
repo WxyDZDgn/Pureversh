@@ -43,7 +43,7 @@ public class Main extends Application {
 			//退出按钮事件
 			exitButton.setOnAction(exitEvent -> {
 				//保存文件
-				Difficulty.saveFile();
+				Difficulty.saveFile(false);
 				stage.close();
 			});
 			
@@ -66,7 +66,7 @@ public class Main extends Application {
 			main.setAlignment(Pos.CENTER);
 			main.setPadding(new Insets(20, 20, 20, 20));
 			
-			Scene scene = new Scene(main, 400, 200);
+			Scene scene = new Scene(main, 500, 300);
 			stage.setScene(scene);
 			stage.setTitle(Strings.getTitle());	//设置标题
 			

@@ -20,6 +20,7 @@ public class Pureversh {
 	private HBox buttons;	//存放控制按钮 ( 下 )
 	private Button restartButton;
 	private Button rollButton;
+	private Button settingButton;	//设置难度
 	private Button exitButton;	//退出按钮
 	public Pureversh() {
 		this(null);
@@ -38,7 +39,7 @@ public class Pureversh {
 	private void fresh() {	//更新数列 ( 再来一组 )
 		main = new VBox(20);
 
-		scene = new Scene(main, 400, 200);
+		scene = new Scene(main, 500, 300);
 		stage = new Stage();
 
 		main.setAlignment(Pos.CENTER);
@@ -48,6 +49,7 @@ public class Pureversh {
 		buttons.setAlignment(Pos.CENTER);
 		restartButton = new Button(Strings.getRestart());
 		rollButton = new Button(Strings.getRoll());
+		settingButton = new Button(Strings.getSetting());
 		exitButton = new Button(Strings.getExit());
 
 		restartButton.setOnAction(restartEvent -> {
@@ -56,12 +58,16 @@ public class Pureversh {
 		rollButton.setOnAction(rollEvent -> {
 			mainGame.roll();
 		});
+		settingButton.setOnAction(settingEvent -> {
+			Setting setting = new Setting(stage);
+			setting.start();
+		});
 		exitButton.setOnAction(exitEvent -> {
-			Difficulty.saveFile();
+			Difficulty.saveFile(false);
 			stage.close();
 		});
 
-		buttons.getChildren().addAll(restartButton, rollButton, exitButton);
+		buttons.getChildren().addAll(restartButton, rollButton, settingButton, exitButton);
 
 
 		main.getChildren().addAll(mainGame.getVBox(), buttons);
